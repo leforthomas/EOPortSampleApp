@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EOPortSampleApp.iml" filepath="$PROJECT_DIR$/EOPortSampleApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaSample/JavaSample.iml" filepath="$PROJECT_DIR$/JavaSample/JavaSample.iml" />
+    </modules>
+  </component>
+</project>
