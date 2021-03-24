@@ -17,10 +17,10 @@ public class ProductionManagerUtil {
 
     static private Logger logger = Logger.getLogger(ProductionManagerUtil.class);
 
-    public static void notifyDelivery(String objectURI) throws Exception {
-        ResponseProduct responseProduct = new ResponseProduct();
-        responseProduct.setObjectURI(objectURI);
-        Response response = getWebTarget("/service")
+    public static void notifyDelivery(String downstreamURI, ResponseProduct responseProduct) throws Exception {
+        Client client = ClientBuilder.newClient();
+        Response response = client
+                .target(downstreamURI)
                 .request()
                 .buildPost(Entity.json(responseProduct))
                 .submit().get();

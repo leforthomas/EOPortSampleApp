@@ -1,10 +1,12 @@
 package com.geocento.projects.eoport.examples.services.api;
 
 
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.geocento.projects.eoport.examples.services.api.dtos.InputProduct;
-import com.geocento.projects.eoport.examples.services.api.utils.Configuration;
-import com.geocento.projects.eoport.examples.services.api.utils.S3OBSUtils;
-import com.geocento.projects.eoport.examples.services.api.utils.Utils;
+import com.geocento.projects.eoport.examples.services.api.dtos.Metadata;
+import com.geocento.projects.eoport.examples.services.api.dtos.ResponseProduct;
+import com.geocento.projects.eoport.examples.services.api.dtos.UsageReport;
+import com.geocento.projects.eoport.examples.services.api.utils.*;
 import org.apache.log4j.Logger;
 import org.geotools.data.*;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -26,6 +28,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import java.io.File;
 import java.io.Serializable;
+import java.net.URI;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -47,8 +50,9 @@ public class ServiceResource extends BaseResource {
         logger = Logger.getLogger(ServiceResource.class);
     }
 
+    static String bucketname = Configuration.getProperty(Configuration.APPLICATION_SETTINGS.bucketName);
+
     public ServiceResource() {
-        logger.info("Starting the geopublisher api service");
     }
 
     @POST
@@ -59,13 +63,24 @@ public class ServiceResource extends BaseResource {
         try {
             // TODO - create task and schedule pod creation
             final String taskID = inputProduct.getTaskID();
+            final String pipelineID = inputProduct.getPipelineID();
+            final String dumpID = inputProduct.getDumpID();
+            final Boolean taskFinished = inputProduct.getTaskFinished();
+            // the downstream URI is the URL the service should send the result back
+            final String downstreamURI = inputProduct.getDownstreamURI();
+
             // for the sake of the demo we just create a thread to send a message back after a while
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     try {
                         // send back a file which is a geojson of the input coordinates
-                        String boundary = inputProduct.getMetadata().getBoundaryCoordinates();
+                        String boundary = inputProduct.getMetadata().get("boundaryCoordinates");
+                        boundary = boundary.trim();
+                        // remove leading and training CR
+                        if(boundary.startsWith("\n")) {
+                            boundary = boundary.substring("\n".length());
+                        }
                         String[] latLngs = boundary.split(" ");
                         SimpleFeatureType TYPE = DataUtilities.createType(
                                 "example", "the_geom:Point:srid=4326," + "name:String");
@@ -119,16 +134,38 @@ public class ServiceResource extends BaseResource {
                         // now zip and save on S3
                         File zipFile = new File(Configuration.getProperty(Configuration.APPLICATION_SETTINGS.pathToTmp), taskID + ".zip");
                         Utils.zipFiles(zipFile, Arrays.asList(directory.listFiles()));
-                        S3OBSUtils.uploadFile(zipFile);
+
+                        String objectURI = S3OBSUtils.uploadFile(bucketname, zipFile);
 
                         // send notification to PM
+                        ResponseProduct responseProduct = new ResponseProduct();
+                        responseProduct.setTaskID(taskID);
+                        responseProduct.setPipelineID(pipelineID);
+                        responseProduct.setDumpID(dumpID);
+                        responseProduct.setTaskFinished(taskFinished);
+                        // add some metadata if needed
+                        Metadata metadata = new Metadata();
+                        metadata.put("property", "example");
+                        responseProduct.setMetadata(metadata);
+                        // set the result URI
+                        responseProduct.setObjectURI(objectURI);
+                        // add usage information
+                        UsageReport usageReport = new UsageReport();
+                        // example value
+                        usageReport.setAmount("10");
+                        usageReport.setRecordDate(new Date());
+                        // units need to match how you set up your service
+                        usageReport.setUnitType("km2");
+                        responseProduct.setUsage(usageReport);
 
+                        // now send the message to the production manager
+                        ProductionManagerUtil.notifyDelivery(downstreamURI, responseProduct);
 
                     } catch (Exception e) {
                         logger.error(e.getMessage(), e);
                     }
                 }
-            }, 10000);
+            }, 1000);
         } catch (Exception e) {
             throw handleException(e);
         }

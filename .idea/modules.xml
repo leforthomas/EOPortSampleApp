@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EOPortSampleApp.iml" filepath="$PROJECT_DIR$/EOPortSampleApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaSample/JavaSample.iml" filepath="$PROJECT_DIR$/JavaSample/JavaSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PythonExamples/PythonExamples.iml" filepath="$PROJECT_DIR$/PythonExamples/PythonExamples.iml" />
     </modules>
   </component>
 </project>

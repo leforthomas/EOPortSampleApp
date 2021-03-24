@@ -52,7 +52,7 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.10.1" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-joda:2.10.1" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.9.9" />
-          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.0" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.11" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.6" />
           <element id="library" level="project" name="Maven: org.geotools:gt-shapefile:24.2" />
           <element id="library" level="project" name="Maven: org.geotools:gt-main:24.2" />
@@ -153,7 +153,13 @@
           <element id="library" level="project" name="Maven: commons-httpclient:commons-httpclient:3.1" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.2" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
-          <element id="library" level="project" name="Maven: com.geocento.projects.eoport:notifications-client:1.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.31" />
+          <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.31" />
+          <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-core:1.11.31" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.2" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
+          <element id="library" level="project" name="Maven: com.amazonaws:jmespath-java:1.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

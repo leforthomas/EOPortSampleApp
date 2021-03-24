@@ -111,6 +111,7 @@
                         </goals>
                         <configuration>
                             <serverId>aws-eoport-sftp-server</serverId>
+                            <url>sftp://eoport@52.213.12.39/tmp/eoport/images/${artifact.filename}</url>
                             <fromDir>${artifact.directory}</fromDir>
                             <includes>${artifact.filename}.war</includes>
                         </configuration>
@@ -229,7 +230,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.0</version>
+            <version>3.11</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
@@ -284,18 +285,10 @@
             </exclusions>
         </dependency>
 
-        <!--        local libraries-->
         <dependency>
-            <groupId>com.geocento.projects.eoport</groupId>
-            <artifactId>notifications-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.otc.obs</groupId>
-            <artifactId>asdk-obs</artifactId>
-            <version>2.1.20</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/library/esdk-obs-java-2.1.20.jar</systemPath>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.11.31</version>
         </dependency>
 
         <dependency>

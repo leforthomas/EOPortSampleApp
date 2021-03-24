@@ -1,6 +1,7 @@
 package com.geocento.projects.eoport.examples.services.api.dtos;
 
 public class ResponseProduct {
+
     String taskID;
     String dataType;
     Integer partCounter;
@@ -9,6 +10,7 @@ public class ResponseProduct {
     String dumpID;
     String mission;
     Boolean taskFinished;
+    Metadata metadata;
     UsageReport usage;
 
     public ResponseProduct() {
@@ -76,6 +78,14 @@ public class ResponseProduct {
 
     public void setTaskFinished(Boolean taskFinished) {
         this.taskFinished = taskFinished;
+    }
+
+    public Metadata getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
     }
 
     public UsageReport getUsage() {

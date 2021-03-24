@@ -5,7 +5,7 @@
          version="4.0">
 
     <listener>
-        <listener-class>com.geocento.projects.eoport.geopublisher.ContextListener</listener-class>
+        <listener-class>com.geocento.projects.eoport.examples.ContextListener</listener-class>
     </listener>
 
     <servlet>
@@ -14,7 +14,7 @@
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>
-                com.geocento.projects.eoport.geopublisher.api
+                com.geocento.projects.eoport.examples.services.api
             </param-value>
         </init-param>
         <init-param>
@@ -24,7 +24,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>API</servlet-name>
-        <url-pattern>/com.geocento.projects.eoport.examples.services.api/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

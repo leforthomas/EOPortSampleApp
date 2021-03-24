@@ -18,7 +18,8 @@ public class Configuration {
         emailReportingPipeId, emailStartupReportingPipeId,
         pathToTmp,
         // otc stuff for S3
-        otcAccessKey, otcSecretKey, otcObsEndpoint, bucketName, productionManagerURL, deliveryURIVhostFormatted
+        otcAccessKey, otcSecretKey, otcObsEndpoint, bucketName, deliveryURIVhostFormatted,
+        productionManagerURL
     };
 
     static private Properties props=new Properties();
