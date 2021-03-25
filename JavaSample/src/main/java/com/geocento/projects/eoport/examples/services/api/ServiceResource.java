@@ -1,6 +1,7 @@
 package com.geocento.projects.eoport.examples.services.api;
 
 
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.geocento.projects.eoport.examples.services.api.dtos.InputProduct;
 import com.geocento.projects.eoport.examples.services.api.dtos.Metadata;
@@ -74,6 +75,8 @@ public class ServiceResource extends BaseResource {
                 @Override
                 public void run() {
                     try {
+                        File inputDirectory = new File(Configuration.getProperty(Configuration.APPLICATION_SETTINGS.pathToTmp));
+                        File file = S3OBSUtils.downloadFromURI(inputProduct.getObjectURI(), inputDirectory);
                         // send back a file which is a geojson of the input coordinates
                         String boundary = inputProduct.getMetadata().get("boundaryCoordinates");
                         boundary = boundary.trim();
