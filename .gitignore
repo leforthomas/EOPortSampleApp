@@ -1,1 +1,10 @@
-/JavaSample/target/
+/.idea/
+/EOPortSampleApp.iml
+/JavaExamples/target/
+/JavaExamples/JavaExamples.iml
+/JavaExamples/ServiceExample/ServiceExample.iml
+/JavaExamples/ServiceExample/target
+/JavaExamples/APIClientExample/APIClientExample.iml
+/JavaExamples/APIClientExample/target/
+/PythonExamples/PythonExamples.iml
+/JavaExamples/ServiceExample/src/main/docker/eoportexampleservice.war

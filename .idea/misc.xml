@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/JavaSample" />
+    <file type="web" url="file://$PROJECT_DIR$/JavaExamples" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/JavaSample/pom.xml" />
+        <option value="$PROJECT_DIR$/JavaExamples/ServiceExample/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,0 +1,2099 @@
+openapi: 3.0.0
+info:
+  title: "EO PORT API"
+  version: "0.1"
+  description: "<h1>EO PORT API</h1>\n\n      This is the API to access the EO PORT functionality.\n\n      To connect, first request an OAuth token using the following settings\n      Auth URL is <b>https://keycloak.svc.eoport.eu/auth/realms/eoport/protocol/openid-connect/auth</b>\n      Client ID is <b>eoportapi</b>\n      Client secret <please ask us @ eoport@eoport.eu>\n\n      Once you have received the token, sign your requests setting the Authorization header to 'Bearer <token>'. This token has a limited validity in time so you need to renew it at regular intervals."
+servers:
+- url: "/api"
+paths:
+  "/customer/account/billing":
+    get:
+      description: ""
+      tags:
+        - "AccountResource"
+      summary: ""
+      deprecated: false
+      operationId: getAccountBillingSettings
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_UserBillingSettings"
+ 
+  "/customer/account/profile":
+    get:
+      description: ""
+      tags:
+        - "AccountResource"
+      summary: ""
+      deprecated: false
+      operationId: getUserProfile
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_UserProfile"
+ 
+  "/customer/company/billing":
+    get:
+      description: ""
+      tags:
+        - "CompanyResource"
+      summary: ""
+      deprecated: false
+      operationId: getUserCompanyBillingSettings
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_CompanyBillingAccountInformation"
+ 
+  "/customer/company/profile":
+    get:
+      description: ""
+      tags:
+        - "CompanyResource"
+      summary: ""
+      deprecated: false
+      operationId: getUserCompany
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_CustomerCompany"
+ 
+  "/customer/invoice/company":
+    get:
+      description: ""
+      tags:
+        - "InvoicesResource"
+      summary: ""
+      deprecated: false
+      operationId: getInvoices
+      parameters:
+      - name: "fromDate"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      - name: "untilDate"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_Invoices"
+ 
+  "/customer/invoices/{id}/download/{format}":
+    get:
+      description: "Download an invoice based on the invoice id and in the requested format"
+      tags:
+        - "InvoicesResource"
+      summary: "Download an invoice based on the invoice id and in the requested format"
+      deprecated: false
+      operationId: downloadInvoice
+      parameters:
+      - name: "format"
+        in: path
+        description: "- the requested format, only PDF is supported for now"
+        required: true
+        schema:
+          type: string
+        style: simple
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+ 
+  "/customer/serviceprovider/search":
+    get:
+      description: ""
+      tags:
+        - "ServiceProvidersResource"
+      summary: ""
+      deprecated: false
+      operationId: listServiceProviders
+      parameters:
+      - name: "country"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      - name: "limit"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      - name: "size"
+        in: query
+        description: ""
+        required: false
+        schema:
+          enum:
+          - "large"
+          - "medium"
+          - "small"
+          type: string
+        style: form
+      - name: "start"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      - name: "text"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      - name: "years"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/json_ServiceProviderSimple"
+ 
+  "/customer/serviceprovider/{id}":
+    get:
+      description: ""
+      tags:
+        - "ServiceProvidersResource"
+      summary: ""
+      deprecated: false
+      operationId: getServiceProvider
+      parameters:
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: integer
+          format: int64
+        style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_ServiceProviderFull"
+ 
+  "/customer/service":
+    get:
+      description: ""
+      tags:
+        - "ServicesResource"
+      summary: ""
+      deprecated: false
+      operationId: getAvailableServices
+      parameters:
+      - name: "aoiWKT"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      - name: "categories"
+        in: query
+        description: ""
+        required: false
+        schema:
+          enum:
+          - "agriculture"
+          - "atmosphere"
+          - "climate"
+          - "general"
+          - "land"
+          - "marine"
+          - "other"
+          - "weather"
+          type: array
+          items:
+            type: string
+        style: form
+      - name: "company"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int64
+        style: form
+      - name: "limit"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      - name: "name"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      - name: "start"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_ServiceOffers"
+ 
+  "/customer/samples/{sampleId}":
+    get:
+      description: "Download a sample files as a zip file."
+      tags:
+        - "ServicesResource"
+      summary: "Download a sample files as a zip file."
+      deprecated: false
+      operationId: downloadSample
+      parameters:
+      - name: "sampleId"
+        in: path
+        description: "the ID of the sample to download"
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "Success"
+ 
+  "/customer/service/{serviceId}":
+    get:
+      description: ""
+      tags:
+        - "ServicesResource"
+      summary: ""
+      deprecated: false
+      operationId: getServiceOfferWithInputs
+      parameters:
+      - name: "serviceId"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_ServiceOfferWithInputs"
+ 
+  "/customer/service/sample/{sampleId}":
+    get:
+      description: ""
+      tags:
+        - "ServicesResource"
+      summary: ""
+      deprecated: false
+      operationId: getSample
+      parameters:
+      - name: "sampleId"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_Sample"
+ 
+  "/customer/service/{serviceId}/full":
+    get:
+      description: ""
+      tags:
+        - "ServicesResource"
+      summary: ""
+      deprecated: false
+      operationId: getServiceOfferDescription
+      parameters:
+      - name: "serviceId"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_ServiceOfferDescription"
+ 
+  "/customer/subscription":
+    get:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: getActiveSubscriptions
+      parameters:
+      - name: "fromDate"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      - name: "limit"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      - name: "page"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      - name: "untilDate"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_Subscriptions"
+ 
+    post:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: createSubscription
+      requestBody:
+        description: ""
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/json_SubscriptionRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_Subscription"
+ 
+  "/customer/subscription/{id}":
+    get:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: getSubscription
+      parameters:
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_SubscriptionContent"
+ 
+  "/customer/subscription/{id}/cancel":
+    put:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: cancelSubscription
+      requestBody:
+        description: ""
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: string
+      responses:
+        "204":
+          description: "Success"
+ 
+  "/customer/subscription/{id}/deliveries":
+    get:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: getSubscriptionDeliveries
+      parameters:
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      - name: "limit"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      - name: "page"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/json_SubscriptionDeliveryDTO"
+ 
+  "/customer/subscription/{id}/usage":
+    get:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: getSubscriptionUsage
+      parameters:
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      - name: "startDate"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      - name: "stopDate"
+        in: query
+        description: ""
+        required: false
+        schema:
+          type: integer
+          format: int32
+        style: form
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_DailySubscriptionUsage"
+ 
+  "/customer/subscription/{id}/delivery/{deliveryId}":
+    get:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: getSubscriptionDelivery
+      parameters:
+      - name: "deliveryId"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: integer
+          format: int64
+        style: simple
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_SubscriptionDeliveryDTO"
+ 
+  "/customer/subscription/{id}/delivery/{deliveryId}/publish":
+    post:
+      description: ""
+      tags:
+        - "SubscriptionsResource"
+      summary: ""
+      deprecated: false
+      operationId: publishSubscriptionDelivery
+      parameters:
+      - name: "deliveryId"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: integer
+          format: int64
+        style: simple
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "201":
+          description: ""
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/json_Layer"
+ 
+  "/customer/subscriptions/{id}/content/{deliveryId}/download":
+    get:
+      description: "Download a file generated by a subscription. The file is identified by the content ID.\nThe subscription files are available when loading the subscription content."
+      tags:
+        - "SubscriptionsResource"
+      summary: "Download a file generated by a subscription."
+      deprecated: false
+      operationId: downloadSubscriptionDelivery
+      parameters:
+      - name: "deliveryId"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: integer
+          format: int64
+        style: simple
+      - name: "id"
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "Success"
+ 
+components:
+  schemas:
+    "json_AoIDTO":
+      title: "AoIDTO"
+      type: object
+      properties:
+        "id":
+          type: integer
+          format: int64
+        "name":
+          type: string
+        "wktGeometry":
+          type: string
+      example:
+        id: 12345
+        name: "..."
+        wktGeometry: "..."
+    "json_BillingPeriod":
+      title: "BillingPeriod"
+      type: string
+      enum:
+      - "month"
+      - "year"
+    "json_CATEGORY":
+      title: "CATEGORY"
+      type: string
+      enum:
+      - "agriculture"
+      - "atmosphere"
+      - "marine"
+      - "land"
+      - "climate"
+      - "weather"
+      - "general"
+      - "other"
+    "json_COMPANY_SIZE":
+      title: "COMPANY_SIZE"
+      type: string
+      enum:
+      - "small"
+      - "medium"
+      - "large"
+    "json_Company":
+      title: "Company"
+      type: object
+      properties:
+        "id":
+          type: integer
+          format: int64
+        "name":
+          type: string
+        "iconURL":
+          type: string
+        "description":
+          type: string
+        "contactEmail":
+          type: string
+        "website":
+          type: string
+        "address":
+          type: string
+        "countryCode":
+          type: string
+        "status":
+          $ref: "#/components/schemas/json_REGISTRATION_STATUS"
+      example:
+        id: 12345
+        name: "..."
+        iconURL: "..."
+        description: "..."
+        contactEmail: "..."
+        website: "..."
+        address: "..."
+        countryCode: "..."
+        status: "UNAPPROVED"
+    "json_CompanyBillingAccountInformation":
+      title: "CompanyBillingAccountInformation"
+      type: object
+      properties:
+        "billingEmail":
+          type: string
+        "name":
+          type: string
+        "streetAddress":
+          type: string
+        "city":
+          type: string
+        "region":
+          type: string
+        "postCode":
+          type: string
+        "country":
+          type: string
+        "phoneNumber":
+          type: string
+        "billCycleDayLocal":
+          type: integer
+          format: int32
+        "timeZone":
+          type: string
+        "currency":
+          type: string
+      example:
+        billingEmail: "..."
+        name: "..."
+        streetAddress: "..."
+        city: "..."
+        region: "..."
+        postCode: "..."
+        country: "..."
+        phoneNumber: "..."
+        billCycleDayLocal: 12345
+        timeZone: "..."
+        currency: "..."
+    "json_CustomerCompany":
+      title: "CustomerCompany"
+      allOf:
+      - $ref: "#/components/schemas/json_Company"
+      - type: object
+        properties:
+          "owner":
+            $ref: "#/components/schemas/json_UserProfile"
+          "members":
+            type: array
+            items:
+              $ref: "#/components/schemas/json_UserProfile"
+        example:
+          owner:
+            keycloakId: "..."
+            userName: "..."
+            firstName: "..."
+            lastName: "..."
+            email: "..."
+            registrationDate: 12345
+          members:
+          - keycloakId: "..."
+            userName: "..."
+            firstName: "..."
+            lastName: "..."
+            email: "..."
+            registrationDate: 12345
+          - keycloakId: "..."
+            userName: "..."
+            firstName: "..."
+            lastName: "..."
+            email: "..."
+            registrationDate: 12345
+          id: 12345
+          name: "..."
+          iconURL: "..."
+          description: "..."
+          contactEmail: "..."
+          website: "..."
+          address: "..."
+          countryCode: "..."
+          status: "UNAPPROVED"
+    "json_DailySubscriptionUsage":
+      title: "DailySubscriptionUsage"
+      type: object
+      properties:
+        "subscriptionId":
+          type: string
+        "subscriptionName":
+          type: string
+        "startDay":
+          type: integer
+          format: int32
+        "values":
+          type: array
+          items:
+            type: integer
+            format: int32
+        "unitType":
+          type: string
+      example:
+        subscriptionId: "..."
+        subscriptionName: "..."
+        startDay: 12345
+        values:
+        - 12345
+        - 12345
+        unitType: "..."
+    "json_Instrument":
+      title: "Instrument"
+      type: object
+      required:
+      - "resolution"
+      properties:
+        "id":
+          description: "the id of the instrument, used for querying by instrument"
+          type: integer
+          format: int64
+        "name":
+          description: "the name of the instrument"
+          type: string
+        "modes":
+          description: "the modes of the instrument"
+          type: array
+          items:
+            $ref: "#/components/schemas/json_Mode"
+        "description":
+          description: "a simple description of the instrument"
+          type: string
+        "informationUrl":
+          description: "a link to a more complete description of the instrument and its satellite"
+          type: string
+        "resolution":
+          description: "the maximum ground resolution for this instrument in meters"
+          type: number
+          format: double
+        "type":
+          $ref: "#/components/schemas/json_SENSOR_TYPE"
+        "opticalType":
+          $ref: "#/components/schemas/json_OPTICAL_TYPE"
+        "opticalBands":
+          description: "List of bands included in the collected imagery (if optical)"
+          type: array
+          items:
+            $ref: "#/components/schemas/json_OPTICAL_WAVE_BANDS"
+        "radarBand":
+          $ref: "#/components/schemas/json_RADAR_BANDS"
+        "radarPols":
+          description: "The radar available polarisations (if radar)"
+          type: array
+          items:
+            $ref: "#/components/schemas/json_RADAR_POLS"
+        "radarPolsTypes":
+          $ref: "#/components/schemas/json_RADAR_POLS_TYPES"
+      example:
+        id: 12345
+        name: "..."
+        modes:
+        - name: "..."
+          minAngle: 12345.0
+          maxAngle: 12345.0
+        - name: "..."
+          minAngle: 12345.0
+          maxAngle: 12345.0
+        description: "..."
+        informationUrl: "..."
+        resolution: 12345.0
+        type: "Radar"
+        opticalType: "MULTI"
+        opticalBands:
+        - "green"
+        - "oceanBlue"
+        radarBand: "SBand"
+        radarPols:
+        - "VV"
+        - "VH"
+        radarPolsTypes: "Full"
+    "json_Invoice":
+      title: "Invoice"
+      type: object
+      properties:
+        "id":
+          type: string
+        "number":
+          type: string
+        "generatedDate":
+          type: integer
+          format: int32
+        "status":
+          type: string
+        "currency":
+          type: string
+        "dueDate":
+          type: integer
+          format: int32
+        "totalDueValue":
+          type: number
+        "totalPaidValue":
+          type: number
+        "downloadUrl":
+          type: string
+      example:
+        id: "..."
+        number: "..."
+        generatedDate: 12345
+        status: "..."
+        currency: "..."
+        dueDate: 12345
+        totalDueValue: 12345.0
+        totalPaidValue: 12345.0
+        downloadUrl: "..."
+    "json_Invoices":
+      title: "Invoices"
+      type: object
+      required:
+      - "total"
+      properties:
+        "total":
+          type: integer
+          format: int32
+        "invoices":
+          type: array
+          items:
+            $ref: "#/components/schemas/json_Invoice"
+      example:
+        total: 12345
+        invoices:
+        - id: "..."
+          number: "..."
+          generatedDate: 12345
+          status: "..."
+          currency: "..."
+          dueDate: 12345
+          totalDueValue: 12345.0
+          totalPaidValue: 12345.0
+          downloadUrl: "..."
+        - id: "..."
+          number: "..."
+          generatedDate: 12345
+          status: "..."
+          currency: "..."
+          dueDate: 12345
+          totalDueValue: 12345.0
+          totalPaidValue: 12345.0
+          downloadUrl: "..."
+    "json_Layer":
+      title: "Layer"
+      type: object
+      properties:
+        "workspace":
+          type: string
+        "layerName":
+          type: string
+        "sld":
+          type: string
+      example:
+        workspace: "..."
+        layerName: "..."
+        sld: "..."
+    "json_Mode":
+      title: "Mode"
+      type: object
+      required:
+      - "minAngle"
+      - "maxAngle"
+      properties:
+        "name":
+          description: "name"
+          type: string
+        "minAngle":
+          type: number
+          format: double
+        "maxAngle":
+          type: number
+          format: double
+      example:
+        name: "..."
+        minAngle: 12345.0
+        maxAngle: 12345.0
+    "json_OPTICAL_TYPE":
+      title: "OPTICAL_TYPE"
+      type: string
+      enum:
+      - "PAN"
+      - "MULTI"
+      - "HYPER"
+    "json_OPTICAL_WAVE_BANDS":
+      title: "OPTICAL_WAVE_BANDS"
+      type: string
+      enum:
+      - "oceanBlue"
+      - "blue"
+      - "green"
+      - "red"
+      - "redEdge"
+      - "NIR"
+      - "SWIR"
+      - "MWIR"
+      - "TIR"
+    "json_Parameter":
+      title: "Parameter"
+      type: object
+      properties:
+        "parameterType":
+          $ref: "#/components/schemas/json_ParameterType"
+        "name":
+          type: string
+        "description":
+          type: string
+        "reference":
+          type: string
+        "integerMin":
+          type: integer
+          format: int32
+        "integerMax":
+          type: integer
+          format: int32
+        "doubleMin":
+          type: number
+        "doubleMax":
+          type: number
+        "options":
+          type: string
+        "mandatory":
+          type: boolean
+        "multiple":
+          type: boolean
+      example:
+        parameterType: "doubleValue"
+        name: "..."
+        description: "..."
+        reference: "..."
+        integerMin: 12345
+        integerMax: 12345
+        doubleMin: 12345.0
+        doubleMax: 12345.0
+        options: "..."
+        mandatory: true
+        multiple: true
+    "json_ParameterType":
+      title: "ParameterType"
+      type: string
+      enum:
+      - "intValue"
+      - "doubleValue"
+      - "choiceValue"
+    "json_PricePlanCost":
+      title: "PricePlanCost"
+      type: object
+      properties:
+        "billingPeriod":
+          $ref: "#/components/schemas/json_BillingPeriod"
+        "unitCharge":
+          $ref: "#/components/schemas/json_UnitCharge"
+        "currency":
+          type: string
+      example:
+        billingPeriod: "year"
+        unitCharge:
+          usageType: "km2"
+          priceValue: 12345.0
+        currency: "..."
+    "json_ProcessingProductOffer":
+      title: "ProcessingProductOffer"
+      type: object
+      properties:
+        "id":
+          type: string
+        "name":
+          type: string
+        "iconUrl":
+          type: string
+        "description":
+          type: string
+        "category":
+          $ref: "#/components/schemas/json_CATEGORY"
+        "tags":
+          type: array
+          items:
+            type: string
+        "supplier":
+          $ref: "#/components/schemas/json_ServiceProviderSimple"
+      example:
+        id: "..."
+        name: "..."
+        iconUrl: "..."
+        description: "..."
+        category: "agriculture"
+        tags:
+        - "..."
+        - "..."
+        supplier:
+          id: 12345
+          name: "..."
+          iconURL: "..."
+          description: "..."
+          contactEmail: "..."
+          website: "..."
+    "json_RADAR_BANDS":
+      title: "RADAR_BANDS"
+      type: string
+      enum:
+      - "LBand"
+      - "SBand"
+      - "CBand"
+      - "XBand"
+      - "KuBand"
+    "json_RADAR_POLS":
+      title: "RADAR_POLS"
+      type: string
+      enum:
+      - "HH"
+      - "HV"
+      - "VH"
+      - "VV"
+    "json_RADAR_POLS_TYPES":
+      title: "RADAR_POLS_TYPES"
+      type: string
+      enum:
+      - "All"
+      - "Single"
+      - "Dual"
+      - "Full"
+    "json_REGISTRATION_STATUS":
+      title: "REGISTRATION_STATUS"
+      type: string
+      enum:
+      - "REGISTERED"
+      - "PENDING"
+      - "UNAPPROVED"
+      - "APPROVED"
+      - "SUSPENDED"
+    "json_SENSOR_TYPE":
+      title: "SENSOR_TYPE"
+      type: string
+      enum:
+      - "Optical"
+      - "Radar"
+    "json_Sample":
+      title: "Sample"
+      type: object
+      properties:
+        "id":
+          type: string
+        "name":
+          type: string
+        "description":
+          type: string
+        "thumbnailURL":
+          type: string
+        "layer":
+          $ref: "#/components/schemas/json_Layer"
+        "downloadUrl":
+          type: string
+        "size":
+          type: integer
+          format: int64
+        "serviceProviderSimple":
+          $ref: "#/components/schemas/json_ServiceProviderSimple"
+      example:
+        id: "..."
+        name: "..."
+        description: "..."
+        thumbnailURL: "..."
+        layer:
+          workspace: "..."
+          layerName: "..."
+          sld: "..."
+        downloadUrl: "..."
+        size: 12345
+        serviceProviderSimple:
+          id: 12345
+          name: "..."
+          iconURL: "..."
+          description: "..."
+          contactEmail: "..."
+          website: "..."
+    "json_Satellite":
+      title: "Satellite"
+      type: object
+      properties:
+        "name":
+          type: string
+        "description":
+          type: string
+        "informationUrl":
+          type: string
+        "constellation":
+          type: string
+        "imageUrl":
+          type: string
+        "startMissionDate":
+          type: integer
+          format: int32
+        "stopMissionDate":
+          type: integer
+          format: int32
+        "instruments":
+          type: array
+          items:
+            $ref: "#/components/schemas/json_Instrument"
+      example:
+        name: "..."
+        description: "..."
+        informationUrl: "..."
+        constellation: "..."
+        imageUrl: "..."
+        startMissionDate: 12345
+        stopMissionDate: 12345
+        instruments:
+        - id: 12345
+          name: "..."
+          modes:
+          - name: "..."
+            minAngle: 12345.0
+            maxAngle: 12345.0
+          - name: "..."
+            minAngle: 12345.0
+            maxAngle: 12345.0
+          description: "..."
+          informationUrl: "..."
+          resolution: 12345.0
+          type: "Optical"
+          opticalType: "PAN"
+          opticalBands:
+          - "redEdge"
+          - "TIR"
+          radarBand: "SBand"
+          radarPols:
+          - "VV"
+          - "HH"
+          radarPolsTypes: "Dual"
+        - id: 12345
+          name: "..."
+          modes:
+          - name: "..."
+            minAngle: 12345.0
+            maxAngle: 12345.0
+          - name: "..."
+            minAngle: 12345.0
+            maxAngle: 12345.0
+          description: "..."
+          informationUrl: "..."
+          resolution: 12345.0
+          type: "Radar"
+          opticalType: "MULTI"
+          opticalBands:
+          - "green"
+          - "redEdge"
+          radarBand: "XBand"
+          radarPols:
+          - "HV"
+          - "VV"
+          radarPolsTypes: "Single"
+    "json_ServiceOfferDescription":
+      title: "ServiceOfferDescription"
+      allOf:
+      - $ref: "#/components/schemas/json_ServiceOfferWithInputs"
+      - type: object
+        properties:
+          "fullDescription":
+            type: string
+          "termsAndConditions":
+            type: string
+          "website":
+            type: string
+          "email":
+            type: string
+          "extent":
+            type: string
+          "tags":
+            type: array
+            items:
+              type: string
+          "createdOn":
+            type: integer
+            format: int32
+          "samples":
+            type: array
+            items:
+              $ref: "#/components/schemas/json_Sample"
+          "productDescription":
+            type: string
+          "timeToDelivery":
+            type: string
+        example:
+          fullDescription: "..."
+          termsAndConditions: "..."
+          website: "..."
+          email: "..."
+          extent: "..."
+          tags:
+          - "..."
+          - "..."
+          createdOn: 12345
+          samples:
+          - id: "..."
+            name: "..."
+            description: "..."
+            thumbnailURL: "..."
+            layer:
+              workspace: "..."
+              layerName: "..."
+              sld: "..."
+            downloadUrl: "..."
+            size: 12345
+            serviceProviderSimple:
+              id: 12345
+              name: "..."
+              iconURL: "..."
+              description: "..."
+              contactEmail: "..."
+              website: "..."
+          - id: "..."
+            name: "..."
+            description: "..."
+            thumbnailURL: "..."
+            layer:
+              workspace: "..."
+              layerName: "..."
+              sld: "..."
+            downloadUrl: "..."
+            size: 12345
+            serviceProviderSimple:
+              id: 12345
+              name: "..."
+              iconURL: "..."
+              description: "..."
+              contactEmail: "..."
+              website: "..."
+          productDescription: "..."
+          timeToDelivery: "..."
+          pricePlanId: "..."
+          pricePlanCost:
+            billingPeriod: "month"
+            unitCharge:
+              usageType: "km2"
+              priceValue: 12345.0
+            currency: "..."
+          supportedSatellites:
+          - name: "..."
+            description: "..."
+            informationUrl: "..."
+            constellation: "..."
+            imageUrl: "..."
+            startMissionDate: 12345
+            stopMissionDate: 12345
+            instruments:
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Radar"
+              opticalType: "PAN"
+              opticalBands:
+              - "redEdge"
+              - "oceanBlue"
+              radarBand: "SBand"
+              radarPols:
+              - "HV"
+              - "VV"
+              radarPolsTypes: "Dual"
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Optical"
+              opticalType: "HYPER"
+              opticalBands:
+              - "blue"
+              - "blue"
+              radarBand: "KuBand"
+              radarPols:
+              - "VH"
+              - "HH"
+              radarPolsTypes: "Single"
+          - name: "..."
+            description: "..."
+            informationUrl: "..."
+            constellation: "..."
+            imageUrl: "..."
+            startMissionDate: 12345
+            stopMissionDate: 12345
+            instruments:
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Radar"
+              opticalType: "HYPER"
+              opticalBands:
+              - "redEdge"
+              - "red"
+              radarBand: "CBand"
+              radarPols:
+              - "VV"
+              - "HH"
+              radarPolsTypes: "All"
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Radar"
+              opticalType: "PAN"
+              opticalBands:
+              - "SWIR"
+              - "SWIR"
+              radarBand: "SBand"
+              radarPols:
+              - "VV"
+              - "HH"
+              radarPolsTypes: "Single"
+          parameters:
+          - parameterType: "choiceValue"
+            name: "..."
+            description: "..."
+            reference: "..."
+            integerMin: 12345
+            integerMax: 12345
+            doubleMin: 12345.0
+            doubleMax: 12345.0
+            options: "..."
+            mandatory: true
+            multiple: true
+          - parameterType: "doubleValue"
+            name: "..."
+            description: "..."
+            reference: "..."
+            integerMin: 12345
+            integerMax: 12345
+            doubleMin: 12345.0
+            doubleMax: 12345.0
+            options: "..."
+            mandatory: true
+            multiple: true
+          id: "..."
+          name: "..."
+          iconUrl: "..."
+          description: "..."
+          category: "climate"
+          supplier:
+            id: 12345
+            name: "..."
+            iconURL: "..."
+            description: "..."
+            contactEmail: "..."
+            website: "..."
+    "json_ServiceOfferWithInputs":
+      title: "ServiceOfferWithInputs"
+      allOf:
+      - $ref: "#/components/schemas/json_ProcessingProductOffer"
+      - type: object
+        properties:
+          "pricePlanId":
+            type: string
+          "pricePlanCost":
+            $ref: "#/components/schemas/json_PricePlanCost"
+          "supportedSatellites":
+            type: array
+            items:
+              $ref: "#/components/schemas/json_Satellite"
+          "parameters":
+            type: array
+            items:
+              $ref: "#/components/schemas/json_Parameter"
+        example:
+          pricePlanId: "..."
+          pricePlanCost:
+            billingPeriod: "year"
+            unitCharge:
+              usageType: "alarm"
+              priceValue: 12345.0
+            currency: "..."
+          supportedSatellites:
+          - name: "..."
+            description: "..."
+            informationUrl: "..."
+            constellation: "..."
+            imageUrl: "..."
+            startMissionDate: 12345
+            stopMissionDate: 12345
+            instruments:
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Radar"
+              opticalType: "MULTI"
+              opticalBands:
+              - "MWIR"
+              - "TIR"
+              radarBand: "CBand"
+              radarPols:
+              - "VV"
+              - "VH"
+              radarPolsTypes: "All"
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Optical"
+              opticalType: "MULTI"
+              opticalBands:
+              - "MWIR"
+              - "MWIR"
+              radarBand: "KuBand"
+              radarPols:
+              - "VH"
+              - "VV"
+              radarPolsTypes: "All"
+          - name: "..."
+            description: "..."
+            informationUrl: "..."
+            constellation: "..."
+            imageUrl: "..."
+            startMissionDate: 12345
+            stopMissionDate: 12345
+            instruments:
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Optical"
+              opticalType: "HYPER"
+              opticalBands:
+              - "oceanBlue"
+              - "NIR"
+              radarBand: "XBand"
+              radarPols:
+              - "HV"
+              - "HV"
+              radarPolsTypes: "All"
+            - id: 12345
+              name: "..."
+              modes:
+              - {}
+              - {}
+              description: "..."
+              informationUrl: "..."
+              resolution: 12345.0
+              type: "Radar"
+              opticalType: "PAN"
+              opticalBands:
+              - "MWIR"
+              - "SWIR"
+              radarBand: "XBand"
+              radarPols:
+              - "HH"
+              - "VH"
+              radarPolsTypes: "Single"
+          parameters:
+          - parameterType: "doubleValue"
+            name: "..."
+            description: "..."
+            reference: "..."
+            integerMin: 12345
+            integerMax: 12345
+            doubleMin: 12345.0
+            doubleMax: 12345.0
+            options: "..."
+            mandatory: true
+            multiple: true
+          - parameterType: "doubleValue"
+            name: "..."
+            description: "..."
+            reference: "..."
+            integerMin: 12345
+            integerMax: 12345
+            doubleMin: 12345.0
+            doubleMax: 12345.0
+            options: "..."
+            mandatory: true
+            multiple: true
+          id: "..."
+          name: "..."
+          iconUrl: "..."
+          description: "..."
+          category: "climate"
+          tags:
+          - "..."
+          - "..."
+          supplier:
+            id: 12345
+            name: "..."
+            iconURL: "..."
+            description: "..."
+            contactEmail: "..."
+            website: "..."
+    "json_ServiceOffers":
+      title: "ServiceOffers"
+      type: object
+      properties:
+        "total":
+          type: integer
+          format: int64
+        "processingProductOffers":
+          type: array
+          items:
+            $ref: "#/components/schemas/json_ProcessingProductOffer"
+      example:
+        total: 12345
+        processingProductOffers:
+        - id: "..."
+          name: "..."
+          iconUrl: "..."
+          description: "..."
+          category: "atmosphere"
+          tags:
+          - "..."
+          - "..."
+          supplier:
+            id: 12345
+            name: "..."
+            iconURL: "..."
+            description: "..."
+            contactEmail: "..."
+            website: "..."
+        - id: "..."
+          name: "..."
+          iconUrl: "..."
+          description: "..."
+          category: "weather"
+          tags:
+          - "..."
+          - "..."
+          supplier:
+            id: 12345
+            name: "..."
+            iconURL: "..."
+            description: "..."
+            contactEmail: "..."
+            website: "..."
+    "json_ServiceProviderFull":
+      title: "ServiceProviderFull"
+      allOf:
+      - $ref: "#/components/schemas/json_ServiceProviderSimple"
+      - type: object
+        properties:
+          "address":
+            type: string
+          "countryCode":
+            type: string
+          "fullDescription":
+            type: string
+          "startedIn":
+            type: integer
+            format: int32
+          "companySize":
+            $ref: "#/components/schemas/json_COMPANY_SIZE"
+          "services":
+            type: array
+            items:
+              $ref: "#/components/schemas/json_ProcessingProductOffer"
+          "awards":
+            type: array
+            items:
+              type: string
+          "followers":
+            type: integer
+            format: int64
+        example:
+          address: "..."
+          countryCode: "..."
+          fullDescription: "..."
+          startedIn: 12345
+          companySize: "medium"
+          services:
+          - id: "..."
+            name: "..."
+            iconUrl: "..."
+            description: "..."
+            category: "land"
+            tags:
+            - "..."
+            - "..."
+            supplier:
+              id: 12345
+              name: "..."
+              iconURL: "..."
+              description: "..."
+              contactEmail: "..."
+              website: "..."
+          - id: "..."
+            name: "..."
+            iconUrl: "..."
+            description: "..."
+            category: "atmosphere"
+            tags:
+            - "..."
+            - "..."
+            supplier:
+              id: 12345
+              name: "..."
+              iconURL: "..."
+              description: "..."
+              contactEmail: "..."
+              website: "..."
+          awards:
+          - "..."
+          - "..."
+          followers: 12345
+          id: 12345
+          name: "..."
+          iconURL: "..."
+          description: "..."
+          contactEmail: "..."
+          website: "..."
+    "json_ServiceProviderSimple":
+      title: "ServiceProviderSimple"
+      type: object
+      properties:
+        "id":
+          type: integer
+          format: int64
+        "name":
+          type: string
+        "iconURL":
+          type: string
+        "description":
+          type: string
+        "contactEmail":
+          type: string
+        "website":
+          type: string
+      example:
+        id: 12345
+        name: "..."
+        iconURL: "..."
+        description: "..."
+        contactEmail: "..."
+        website: "..."
+    "json_Subscription":
+      title: "Subscription"
+      type: object
+      properties:
+        "id":
+          type: string
+        "status":
+          $ref: "#/components/schemas/json_SubscriptionStatus"
+        "bundleId":
+          type: string
+        "startDate":
+          type: integer
+          format: int32
+        "endDate":
+          type: integer
+          format: int32
+        "productId":
+          type: string
+        "productName":
+          type: string
+        "parameters":
+          type: object
+          additionalProperties:
+            type: string
+        "productsDeliveredCount":
+          type: integer
+          format: int64
+        "iconUrl":
+          type: string
+        "name":
+          type: string
+      example:
+        id: "..."
+        status: "INACTIVE"
+        bundleId: "..."
+        startDate: 12345
+        endDate: 12345
+        productId: "..."
+        productName: "..."
+        parameters:
+          property1: "..."
+          property2: "..."
+        productsDeliveredCount: 12345
+        iconUrl: "..."
+        name: "..."
+    "json_SubscriptionContent":
+      title: "SubscriptionContent"
+      type: object
+      required:
+      - "deliveriesCount"
+      properties:
+        "id":
+          type: string
+        "name":
+          type: string
+        "status":
+          $ref: "#/components/schemas/json_SubscriptionStatus"
+        "bundleId":
+          type: string
+        "createdOn":
+          type: integer
+          format: int32
+        "startDate":
+          type: integer
+          format: int32
+        "endDate":
+          type: integer
+          format: int32
+        "serviceIconUrl":
+          type: string
+        "productId":
+          type: string
+        "productName":
+          type: string
+        "parameters":
+          type: object
+          additionalProperties:
+            type: string
+        "deliveriesCount":
+          type: integer
+          format: int64
+        "callbackurl":
+          type: string
+        "aoi":
+          $ref: "#/components/schemas/json_AoIDTO"
+      example:
+        id: "..."
+        name: "..."
+        status: "ACTIVE"
+        bundleId: "..."
+        createdOn: 12345
+        startDate: 12345
+        endDate: 12345
+        serviceIconUrl: "..."
+        productId: "..."
+        productName: "..."
+        parameters:
+          property1: "..."
+          property2: "..."
+        deliveriesCount: 12345
+        callbackurl: "..."
+        aoi:
+          id: 12345
+          name: "..."
+          wktGeometry: "..."
+    "json_SubscriptionDeliveryDTO":
+      title: "SubscriptionDeliveryDTO"
+      type: object
+      properties:
+        "id":
+          type: integer
+          format: int64
+        "subscriptionId":
+          type: string
+        "downloadUrl":
+          type: string
+        "createdOn":
+          type: integer
+          format: int32
+        "availableUntil":
+          type: integer
+          format: int32
+        "subscriptionName":
+          type: string
+        "layer":
+          $ref: "#/components/schemas/json_Layer"
+      example:
+        id: 12345
+        subscriptionId: "..."
+        downloadUrl: "..."
+        createdOn: 12345
+        availableUntil: 12345
+        subscriptionName: "..."
+        layer:
+          workspace: "..."
+          layerName: "..."
+          sld: "..."
+    "json_SubscriptionRequest":
+      title: "SubscriptionRequest"
+      type: object
+      properties:
+        "pricePlanId":
+          type: string
+        "parameters":
+          type: object
+          additionalProperties:
+            type: string
+        "name":
+          type: string
+        "start":
+          type: integer
+          format: int32
+        "stop":
+          type: integer
+          format: int32
+        "aoi":
+          type: string
+        "callbackUrl":
+          type: string
+      example:
+        pricePlanId: "..."
+        parameters:
+          property1: "..."
+          property2: "..."
+        name: "..."
+        start: 12345
+        stop: 12345
+        aoi: "..."
+        callbackUrl: "..."
+    "json_SubscriptionStatus":
+      title: "SubscriptionStatus"
+      type: string
+      enum:
+      - "ACTIVE"
+      - "INACTIVE"
+      - "FAILED"
+    "json_Subscriptions":
+      title: "Subscriptions"
+      type: object
+      properties:
+        "total":
+          type: integer
+          format: int64
+        "subscriptions":
+          type: array
+          items:
+            $ref: "#/components/schemas/json_Subscription"
+      example:
+        total: 12345
+        subscriptions:
+        - id: "..."
+          status: "INACTIVE"
+          bundleId: "..."
+          startDate: 12345
+          endDate: 12345
+          productId: "..."
+          productName: "..."
+          parameters:
+            property1: "..."
+            property2: "..."
+          productsDeliveredCount: 12345
+          iconUrl: "..."
+          name: "..."
+        - id: "..."
+          status: "INACTIVE"
+          bundleId: "..."
+          startDate: 12345
+          endDate: 12345
+          productId: "..."
+          productName: "..."
+          parameters:
+            property1: "..."
+            property2: "..."
+          productsDeliveredCount: 12345
+          iconUrl: "..."
+          name: "..."
+    "json_UnitCharge":
+      title: "UnitCharge"
+      type: object
+      required:
+      - "priceValue"
+      properties:
+        "usageType":
+          $ref: "#/components/schemas/json_UsageType"
+        "priceValue":
+          type: number
+          format: double
+      example:
+        usageType: "alarm"
+        priceValue: 12345.0
+    "json_UsageType":
+      title: "UsageType"
+      type: string
+      enum:
+      - "km2"
+      - "gb"
+      - "alarm"
+    "json_UserBillingSettings":
+      title: "UserBillingSettings"
+      type: object
+      properties:
+        "fullName":
+          type: string
+        "currency":
+          type: string
+        "timeZone":
+          type: string
+      example:
+        fullName: "..."
+        currency: "..."
+        timeZone: "..."
+    "json_UserProfile":
+      title: "UserProfile"
+      type: object
+      properties:
+        "keycloakId":
+          type: string
+        "userName":
+          type: string
+        "firstName":
+          type: string
+        "lastName":
+          type: string
+        "email":
+          type: string
+        "registrationDate":
+          type: integer
+          format: int32
+      example:
+        keycloakId: "..."
+        userName: "..."
+        firstName: "..."
+        lastName: "..."
+        email: "..."
+        registrationDate: 12345
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://keycloak.svc.eoport.eu/auth/realms/eoport/protocol/openid-connect/auth/
+          scopes:
+            openid: openid
+            profile: profile
+
+security:
+  - OAuth2: [openid, profile]

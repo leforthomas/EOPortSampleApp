@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="JavaSample" />
+        <module name="APIClientExample" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="JavaSample" target="1.8" />
+      <module name="APIClientExample" target="1.8" />
+      <module name="JavaExamples" target="1.8" />
+      <module name="ServiceExample" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
